@@ -1,6 +1,5 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, } from 'formik';
 import { nanoid } from 'nanoid';
-import { Component } from 'react';
 
 export const ContactForm = ({onAddContact}) => {
     const initialValues = {
