@@ -1,7 +1,20 @@
-import { GlobalStyle } from './GlobalStyles';
 import { Component } from 'react';
+import { nanoid } from 'nanoid';
+import styled from 'styled-components';
+
+import { GlobalStyle } from './GlobalStyles';
 import { ContactForm } from './ContactForm/ContactForm';
-import {ContactList} from './ContactList/ContactList'
+import { ContactList } from './ContactList/ContactList';
+import { Filter } from './Filter/Filter';
+
+// Styles for App
+
+const PageHeader = styled.h1`
+margin: 20px 0 20px 75px`;
+
+const ContactsHeader = styled.h2`
+margin: 20px 0 20px 90px`;
+
 
 export class App extends Component {
   state = {
@@ -13,16 +26,26 @@ export class App extends Component {
     ],
     filter: '',
   };
-  addContact = (values, {resetForm}) => {
+  addContact = (values, { resetForm }) => {
+    if (this.state.contacts.find(contact => contact.name === values.name)) {
+      alert(`${values.name} is already in contacts`)
+    } else if (values.number === "" && values.name === "") {
+      alert(`Enter name and number`)
+    } else if (values.name === "") {
+      alert(`Сontact must contain a name`)
+    } else if (values.number === "") {
+      alert(`Сontact must contain a number`)
+    } else {
       this.setState({
-      contacts: [...this.state.contacts, values]
+        contacts: [...this.state.contacts, { id: nanoid(), ...values }]
       })
-    resetForm();
+      resetForm();
+    }
   };
 
-  onFilterContact = (e) => {
+  filterContactByName = (e) => {
     this.setState({
-      filter: e.target.value,
+      filter: e.target.value.toLowerCase(),
     })
   };
 
@@ -33,17 +56,23 @@ export class App extends Component {
     })
     return result;
   }
+
+  deleteContact = (contactId) => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId)
+    }))
+  }
   
 
   render() {
 
     return (
       <>
-        <h1>Phonebook</h1>
+        <PageHeader>Phonebook</PageHeader>
         <ContactForm onAddContact={this.addContact} />
-        <h2>Contacts</h2>
-        <input type="text" name="filter" onChange={this.onFilterContact}/>
-        <ContactList contacts={this.filteredContacts()} />
+        <ContactsHeader>Your contacts</ContactsHeader>
+        <Filter onFilterContact={this.filterContactByName}/>
+        <ContactList contacts={this.filteredContacts()} onDeleteContact={this.deleteContact} />
 
       <GlobalStyle/>
     </>

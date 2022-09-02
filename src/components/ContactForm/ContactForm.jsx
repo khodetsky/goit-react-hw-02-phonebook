@@ -1,28 +1,29 @@
-import { Formik, Form, Field, } from 'formik';
-import { nanoid } from 'nanoid';
+import { Formik} from 'formik';
+import {AddForm, AddField, InputLabel, SubmitButton} from './ContactForm.styled'
 
-export const ContactForm = ({onAddContact}) => {
+export const ContactForm = ({ onAddContact }) => {
+    
+
     const initialValues = {
-        id: nanoid(),
         name: '',
         number: '',
     };
 
     return (
         <Formik initialValues={initialValues}  onSubmit={onAddContact}>
-            <Form>
-                <label >
+            <AddForm>
+                <InputLabel >
                     Name
-                    <Field type="text" name="name" pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+                    <AddField type="text" name="name" pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                     title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"/>
-                </label>
-                <label >
+                </InputLabel>
+                <InputLabel >
                     Number
-                    <Field type="tel" name="number" pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+                    <AddField type="tel" name="number" pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                     title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"/>
-                </label>
-                <button type='submit'>Add contact</button>
-            </Form>
+                </InputLabel>
+                <SubmitButton type='submit'>Add contact</SubmitButton>
+            </AddForm>
         </Formik>
     );
 };
